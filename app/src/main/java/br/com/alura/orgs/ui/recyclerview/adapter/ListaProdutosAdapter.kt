@@ -2,35 +2,34 @@ package br.com.alura.orgs.ui.recyclerview.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import br.com.alura.orgs.R
+import br.com.alura.orgs.databinding.ProdutoItemBinding
 import br.com.alura.orgs.model.Produto
 
 class ListaProdutosAdapter(
     private val context: Context,
-    private val produtos: List<Produto>
+    produtos: List<Produto>
 ) : RecyclerView.Adapter<ListaProdutosAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        fun vincula(produto: Produto) {
-            val nome = itemView.findViewById<TextView>(R.id.nome)
-            val descricao = itemView.findViewById<TextView>(R.id.descricao)
-            val valor = itemView.findViewById<TextView>(R.id.valor)
 
-            nome.text = produto.nome
-            descricao.text = produto.descricao
-            valor.text = produto.valor.toPlainString()
+    private val produtos = produtos.toMutableList()
+
+    //Alteramos o viewHolder para receber o binding e vinculamos a viewBinding a nossa ViewHolder
+    class ViewHolder(private val binding: ProdutoItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun vincula(produto: Produto) {
+            binding.produtoItemNome.text = produto.nome
+            binding.produtoItemDescricao.text = produto.descricao
+            binding.produtoItemValor.text = produto.valor.toPlainString()
+
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.produto_item, parent, false)
+        //Aqui inflamos o layoutXMl para poder usar os componentes
+        val binding = ProdutoItemBinding.inflate(LayoutInflater.from(context), parent, false)
 
-        return ViewHolder(view)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -40,5 +39,10 @@ class ListaProdutosAdapter(
     }
 
     override fun getItemCount(): Int = produtos.size
+    fun atualiza(produtos: List<Produto>) {
+        this.produtos.clear()
+        this.produtos.addAll(produtos)
+        notifyDataSetChanged()
+    }
 
 }
