@@ -1,10 +1,11 @@
 package br.com.alura.orgs.dao
 
 import br.com.alura.orgs.model.Produto
+import java.math.BigDecimal
 
 class ProdutosDAO {
 
-    fun adiciona(produto: Produto){
+    fun adiciona(produto: Produto) {
         produtos.add(produto)
     }
 
@@ -13,6 +14,12 @@ class ProdutosDAO {
     }
 
     companion object {
-        private val produtos = mutableListOf<Produto>()
+        private val produtos = mutableListOf<Produto>(
+            Produto(
+                "Salada de frutas",
+                "Laranja, maçãs e uva",
+                BigDecimal("19.83")
+            )
+        )
     }
 }
