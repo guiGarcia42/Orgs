@@ -24,11 +24,15 @@ class ListaProdutosActivity: AppCompatActivity() {
     // Dessa forma conseguimos implementar configurações no momento da criação da Activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Precisamos vincular a View do ViewBinding com a activity
+        setContentView(binding.root)
         configuraRecyclerView()
         configuraFab()
 
-        //Precisamos vincular a View do ViewBinding com a activity
-        setContentView(binding.root)
+
+
+
+
     }
 
     override fun onResume() {
