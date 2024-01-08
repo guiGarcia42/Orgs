@@ -2,9 +2,11 @@ package br.com.alura.orgs.ui.recyclerview.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.databinding.ProdutoItemBinding
+import br.com.alura.orgs.extensions.tentaCarregarImagem
 import br.com.alura.orgs.model.Produto
 import java.math.BigDecimal
 import java.text.NumberFormat
@@ -17,6 +19,7 @@ class ListaProdutosAdapter(
 
     private val produtos = produtos.toMutableList()
 
+
     fun atualiza(produtos: List<Produto>) {
         this.produtos.clear()
         this.produtos.addAll(produtos)
@@ -26,11 +29,20 @@ class ListaProdutosAdapter(
     //Alteramos o viewHolder para receber o binding e vinculamos a viewBinding a nossa ViewHolder
     class ViewHolder(
         private val binding: ProdutoItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun vincula(produto: Produto) {
 
+        fun vincula(produto: Produto) {
             binding.produtoItemNome.text = produto.nome
             binding.produtoItemDescricao.text = produto.descricao
             binding.produtoItemValor.text = formataParaMoedaBrasileira(produto.valor)
+
+            // Aqui podemos definir se a imagem vai estar visivel ou não.
+            (if (produto.imagem != null) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }).also { binding.produtoItemImagem.visibility = it }
+
+            binding.produtoItemImagem.tentaCarregarImagem(produto.imagem)
         }
 
         private fun formataParaMoedaBrasileira(valor: BigDecimal): String {

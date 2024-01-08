@@ -29,10 +29,6 @@ class ListaProdutosActivity: AppCompatActivity() {
         configuraRecyclerView()
         configuraFab()
 
-
-
-
-
     }
 
     override fun onResume() {
