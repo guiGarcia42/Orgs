@@ -3,6 +3,7 @@ package br.com.alura.orgs.extensions
 import android.content.Context
 import android.os.Build
 import android.widget.ImageView
+import br.com.alura.orgs.R
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
@@ -37,20 +38,27 @@ object ImageLoaderSingleton {
             }.build()
     }
 }
-fun ImageView.tentaCarregarImagem(url: String? = null, imageLoader: ImageLoader? = null){
+
+fun ImageView.tentaCarregarImagem(
+    url: String? = null,
+    imageLoader: ImageLoader? = null,
+    // transformação de parâmetro com valor padrão para possibilitar a alteração do fallback
+    // essa mesma técnica pode ser utilizada para o error e placeholder também,
+    fallback: Int = R.drawable.imagem_padrao
+    ){
 
     if(imageLoader != null){
-        load(url, imageLoader) {
-            fallback(br.com.alura.orgs.R.drawable.erro) //No caso de retornar nulo
-            error(br.com.alura.orgs.R.drawable.erro) //No caso de retornar imagem inválida
-            placeholder(br.com.alura.orgs.R.drawable.placeholder) //Imagem de loading (pode ser um GIF tb)
-        }
-    } else {
-        load(url) {
-            fallback(br.com.alura.orgs.R.drawable.erro) //No caso de retornar nulo
-            error(br.com.alura.orgs.R.drawable.erro) //No caso de retornar imagem inválida
-            placeholder(br.com.alura.orgs.R.drawable.placeholder) //Imagem de loading (pode ser um GIF tb)
-        }
+    load(url, imageLoader) {
+        fallback(fallback) //No caso de retornar nulo
+        error(R.drawable.erro) //No caso de retornar imagem inválida
+        placeholder(R.drawable.placeholder) //Imagem de loading (pode ser um GIF tb)
     }
+} else {
+    load(url) {
+        fallback(fallback) //No caso de retornar nulo
+        error(R.drawable.erro) //No caso de retornar imagem inválida
+        placeholder(R.drawable.placeholder) //Imagem de loading (pode ser um GIF tb)
+    }
+}
 }
 

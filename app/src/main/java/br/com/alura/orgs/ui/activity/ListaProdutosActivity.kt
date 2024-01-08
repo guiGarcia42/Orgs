@@ -29,6 +29,8 @@ class ListaProdutosActivity: AppCompatActivity() {
         configuraRecyclerView()
         configuraFab()
 
+        adapter
+
     }
 
     override fun onResume() {
@@ -51,11 +53,23 @@ class ListaProdutosActivity: AppCompatActivity() {
     private fun configuraRecyclerView() {
         // Chamamos a recyclerView na activity e para passar os dados precisamos de um Adapter
         val recyclerView = binding.activityListaProdutosRecyclerView
-
         // Passamos o context e uma lista de Produtos, podemos puxar isso de uma API na vida real
         recyclerView.adapter = adapter
         //Setando o layout como linear
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        // implementação do listener para abrir a Activity de detalhes do produto
+        // com o produto clicado
+        adapter.quandoClicaNoItem = {
+            val intent = Intent(
+                this,
+                DetalhesProdutoActivity::class.java
+            ).apply {
+                // envio do produto por meio do extra
+                putExtra(CHAVE_PRODUTO, it)
+            }
+            startActivity(intent)
+        }
     }
 
 }
