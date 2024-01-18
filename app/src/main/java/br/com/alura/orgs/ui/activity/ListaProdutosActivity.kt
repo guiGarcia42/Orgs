@@ -4,11 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import br.com.alura.orgs.dao.ProdutosDAO
+import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.databinding.ActivityListaProdutosBinding
+import br.com.alura.orgs.model.Produto
 import br.com.alura.orgs.ui.recyclerview.adapter.ListaProdutosAdapter
+import java.math.BigDecimal
 
-class ListaProdutosActivity: AppCompatActivity() {
+class ListaProdutosActivity : AppCompatActivity() {
 
     private val dao = ProdutosDAO()
     private val adapter = ListaProdutosAdapter(this, dao.buscaTodos())
@@ -29,7 +33,20 @@ class ListaProdutosActivity: AppCompatActivity() {
         configuraRecyclerView()
         configuraFab()
 
-        adapter
+        val db = Room.databaseBuilder(
+            this,
+            AppDatabase::class.java,
+            "orgs.db"
+        ).allowMainThreadQueries()
+            .build()
+        val produtoDao = db.produtoDao()
+        produtoDao.salva(
+            Produto(
+                nome = "teste nome 1",
+                descricao = "teste desc 1",
+                valor = BigDecimal("10.0")
+            )
+        )
 
     }
 
@@ -61,13 +78,11 @@ class ListaProdutosActivity: AppCompatActivity() {
         // implementação do listener para abrir a Activity de detalhes do produto
         // com o produto clicado
         adapter.quandoClicaNoItem = {
-            val intent = Intent(
-                this,
-                DetalhesProdutoActivity::class.java
-            ).apply {
-                // envio do produto por meio do extra
-                putExtra(CHAVE_PRODUTO, it)
-            }
+            val intent = Intent(this, DetalhesProdutoActivity::class.java)
+                .apply {
+                    // envio do produto por meio do extra
+                    putExtra(CHAVE_PRODUTO, it)
+                }
             startActivity(intent)
         }
     }

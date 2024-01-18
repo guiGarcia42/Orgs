@@ -65,7 +65,11 @@ class FormularioProdutoActivity : AppCompatActivity() {
             BigDecimal(valorEmTexto)
         }
 
-        return Produto(nome, descricao, valor, url)
+        return Produto(
+            nome = nome,
+            descricao = descricao,
+            valor = valor,
+            imagem = url)
     }
 
 }
